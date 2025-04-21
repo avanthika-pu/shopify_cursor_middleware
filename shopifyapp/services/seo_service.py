@@ -96,19 +96,6 @@ class SEOService:
         """
         Optimize description for a single product.
 
-        Parameters:
-            user_id: ID of the requesting user
-            store_id: ID of the store containing the product
-            product_id: ID of the product to optimize
-            custom_prompt: Optional custom prompt template
-
-        Returns:
-            tuple: (response_dict, status_code)
-                response_dict: Contains message and optimized product data
-                status_code: 200 for success, 404/500 for errors
-
-        Raises:
-            Exception: If optimization fails
         """
         try:
             store = Store.query.filter_by(id=store_id, user_id=user_id).first()

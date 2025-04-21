@@ -9,6 +9,7 @@ from .api.prompt import prompt_bp
 from .api.seo import seo_bp
 from .api.analytics import analytics_bp
 import os
+from celery import Celery
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -43,5 +44,17 @@ def create_app(test_config=None):
     app.register_blueprint(prompt_bp, url_prefix='/api')
     app.register_blueprint(seo_bp, url_prefix='/api')
     app.register_blueprint(analytics_bp, url_prefix='/api')
+
+    celery = Celery('shopifyapp',
+                    broker='redis://localhost:6379/0',
+                    backend='redis://localhost:6379/0')
+
+    celery.conf.update(
+        task_serializer='json',
+        accept_content=['json'],
+        result_serializer='json',
+        timezone='UTC',
+        enable_utc=True,
+    )
 
     return app 
